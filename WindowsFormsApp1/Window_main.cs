@@ -43,8 +43,10 @@ namespace WindowsFormsApp1
             string dirs = home_tb.Text;
             string keyFile = keys_tb.Text;
             string pubKey = publicKey_tb.Text;
-            string pubSub;
+            string pubSub="";
 
+
+            Boolean pubKeyEmpty = true;
 
             int lineWidth = 65;
 
@@ -68,7 +70,7 @@ namespace WindowsFormsApp1
 
 
 
-            if (username.Length == 0 || system.Length == 0 || pubKey.Length == 0)
+            if (username.Length == 0 || system.Length == 0 )
                 {
                     existsEmpty = true;
                     MessageBox.Show("There are empty fields!");
@@ -76,7 +78,9 @@ namespace WindowsFormsApp1
             else
                 {
                     existsEmpty = false;
-                }
+                    if (pubKey.Length < 1) { pubKeyEmpty = true; }
+                    else { pubKeyEmpty = false; }
+            }
 
 
 
@@ -87,14 +91,7 @@ namespace WindowsFormsApp1
             if (!existsEmpty)
             {
 
-                try
-                {
-                    pubSub = pubKey.Substring(0, 100);
-                }
-                catch (Exception)
-                {
-                    pubSub = pubKey.Substring(0, 1);
-                }
+             
 
 
 
@@ -146,29 +143,53 @@ namespace WindowsFormsApp1
                     commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, username, parentHome));
                     commands.Add("");
 
-                //SSH key
-                    commands.Add(lineCreator.aligned(" Public key installition ", lineWidth));
-                    commands.Add("#");
-                    commands.Add(String.Format("mkdir -p {0}{1}/.ssh/", keyFile, username));
-                    commands.Add("#");
-                    commands.Add(String.Format("chmod -R 700 {0}{1}", keyFile, username));
-                    commands.Add("#");
-                    commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, username, keyFile));
-                    commands.Add("#");
-                    commands.Add(String.Format("echo \"{0}\" | tee {1}{2}/.ssh/authorized_keys", pubKey, keyFile, username));
-                    commands.Add("#");
-                    commands.Add(String.Format("chmod 644 {0}{1}/.ssh/authorized_keys", keyFile, username));
-                    commands.Add("#");
-                    commands.Add(String.Format("chown {1}:{0} {2}{1}/.ssh/authorized_keys", group, username, keyFile));
-                    commands.Add("");
+                if (!pubKeyEmpty)
+                {
+                    try
+                    {
+                        pubSub = pubKey.Substring(0, 100);
+                    }
+                    catch (Exception)
+                    {
+                        pubSub = pubKey.Substring(0, 1);
+                    }
 
+
+
+
+                    //SSH key
+                    commands.Add(lineCreator.aligned(" Public key installition ", lineWidth));
+                        commands.Add("#");
+                        commands.Add(String.Format("mkdir -p {0}{1}/.ssh/", keyFile, username));
+                        commands.Add("#");
+                        commands.Add(String.Format("chmod -R 700 {0}{1}", keyFile, username));
+                        commands.Add("#");
+                        commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, username, keyFile));
+                        commands.Add("#");
+                        commands.Add(String.Format("echo \"{0}\" | tee {1}{2}/.ssh/authorized_keys", pubKey, keyFile, username));
+                        commands.Add("#");
+                        commands.Add(String.Format("chmod 644 {0}{1}/.ssh/authorized_keys", keyFile, username));
+                        commands.Add("#");
+                        commands.Add(String.Format("chown {1}:{0} {2}{1}/.ssh/authorized_keys", group, username, keyFile));
+                        commands.Add("");
+                }
 
                 // Test
                 commands.Add(lineCreator.aligned(" Check user creation ", lineWidth));
-                commands.Add(String.Format("printf '\\n' && getent passwd | grep {1} && ll {0} | grep {1} && ll {2}{1}/.ssh/authorized_keys | grep {1} && grep  \"{3}\" {2}{1}/.ssh/authorized_keys && printf '\\n'\r\n", parentHome, username, keyFile,pubSub));
+                commands.Add("#");
+                commands.Add(String.Format("printf '\\n'  && getent passwd | grep {1} && ll {0} | grep {1} && printf '\\n'\r\n", parentHome, username, keyFile));
+
+                if (!pubKeyEmpty)
+                    { 
+                        commands.Add("#");
+                        commands.Add(String.Format("printf '\\n' && ll {2}{1}/.ssh/authorized_keys | grep {1} && grep  \"{3}\" {2}{1}/.ssh/authorized_keys  && printf '\\n'\r\n", parentHome, username, keyFile, pubSub)); 
+                    }
 
 
-                path = path.Replace("{", "").Replace("}", "").Replace(",","_");
+                    // ,pubSub
+                    //&& ll {0} | grep {1} && ll {2}{1}/.ssh/authorized_keys | grep {1} && grep  \"{3}\" {2}{1}/.ssh/authorized_keys
+
+                    path = path.Replace("{", "").Replace("}", "").Replace(",","_");
 
 
                 if(path.Length < 150) logWriter.createLogFile(path);

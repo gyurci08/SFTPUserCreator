@@ -1,0 +1,26 @@
+########################### User data ###########################
+
+## System:  	A
+## User:    	SFTP_Intermediate_DEV
+## Pass:    	@qZt&SK9vll&
+## Home:    	/usr/sap/interfaces/SFTP_DIR/SFTP_Intermediate_DEV
+
+################################################################
+
+################### Before CAMP user created ###################
+
+#
+mkdir -p /usr/sap/interfaces/SFTP_DIR/SFTP_Intermediate_DEV
+#
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/SFTP_Intermediate_DEV
+
+#################### After CAMP user created ####################
+
+#
+chown -R SFTP_Intermediate_DEV:sapsys /usr/sap/interfaces/SFTP_DIR/SFTP_Intermediate_DEV
+
+###################### Check user creation ######################
+
+#
+printf '\n'  && getent passwd | grep SFTP_Intermediate_DEV && ll /usr/sap/interfaces/SFTP_DIR/ | grep SFTP_Intermediate_DEV && printf '\n'
+

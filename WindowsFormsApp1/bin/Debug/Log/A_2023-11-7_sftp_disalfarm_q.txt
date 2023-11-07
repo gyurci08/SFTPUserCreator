@@ -1,0 +1,26 @@
+########################### User data ###########################
+
+## System:  	A
+## User:    	sftp_disalfarm_q
+## Pass:    	JoHhiJj@2Ws0
+## Home:    	/usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_q
+
+################################################################
+
+################### Before CAMP user created ###################
+
+#
+mkdir -p /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_q
+#
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_q
+
+#################### After CAMP user created ####################
+
+#
+chown -R sftp_disalfarm_q:sapsys /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_q
+
+###################### Check user creation ######################
+
+#
+printf '\n'  && getent passwd | grep sftp_disalfarm_q && ll /usr/sap/interfaces/SFTP_DIR/ | grep sftp_disalfarm_q && printf '\n'
+
