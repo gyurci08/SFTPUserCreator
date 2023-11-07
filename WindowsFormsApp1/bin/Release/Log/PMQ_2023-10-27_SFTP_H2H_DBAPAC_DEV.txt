@@ -1,0 +1,31 @@
+########################### User data ###########################
+
+## System:  	PMQ
+## User:    	SFTP_H2H_DBAPAC_DEV
+## Pass:    	Jzlt5Uy4uxus
+## Home:    	/usr/sap/interfaces/SFTP_DIR/SFTP_H2H_DBAPAC_DEV
+
+################################################################
+
+################### Before CAMP user created ###################
+
+mkdir -p /usr/sap/interfaces/SFTP_DIR/SFTP_H2H_DBAPAC_DEV
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/SFTP_H2H_DBAPAC_DEV
+
+#################### After CAMP user created ####################
+
+chown -R SFTP_H2H_DBAPAC_DEV:sapsys /usr/sap/interfaces/SFTP_DIR/SFTP_H2H_DBAPAC_DEV
+
+#################### Public key installition ####################
+
+mkdir -p /usr/sap/interfaces/sshkeys/SFTP_H2H_DBAPAC_DEV/.ssh/
+chmod -R 700 /usr/sap/interfaces/sshkeys/SFTP_H2H_DBAPAC_DEV
+chown -R SFTP_H2H_DBAPAC_DEV:sapsys /usr/sap/interfaces/sshkeys/SFTP_H2H_DBAPAC_DEV
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDrrtYlTCV3T+7A+spEnym60KdKgiNV0gwQbpHEZrdN6Ip2bdIn9/xQg0fHlIOavOuC7905pnWKJ/M0glhRNCv+Zji1+ZxITo9pDShSY57YCamvf/VdyzZNtyLFtfHKyS0eHwR8Xtr1lKtA4efY0GCpbR6r6t8gnsPEYubN4CAUM1zjGR8RYyYWWKt6UbCBzsRZq7QF5iy8YEKuc9srFai3AMqb0HW+9qmJJ9xsU6e6zxj5lNNVq5vxWHnqIhGbu0sx9tsapJzCCxIbIbJroRWXQInzjYQ+m2v7NJdnCZM+u9ZTRQ4wHAk72nm5Ud4bxRMeY25HR4/Uij9LbWIW8xY1mQYqtclNTpv/kVpxN9oroC5aMH0OBExXoemKNYb5/M+EGo141CPSZi/9Xsaj8fgFk3i5amgfyLcfuXQQ0vOjBbSbKkPYNJAhE+w/qSL+H+f0Mh8pVfpy1V+XO66S1hhpqwnqhpujSSkLwR1maranb6KxI8el2FMvRKZZdiU/SUd1qGCjgUGBjaPPYuNuAH5IY2CRi+dwN6b3M8QLW+FhUo8OCFI7BWUXuuj8p9UALcGFyeyGwa/0RsBPbPD8melpb1Ty7jEl8pWA3OgvbR2zt74bCC0A1Sie5Fel0fmpWxGwCCL14ZqgeOGH/R3zKCL1v+4Xp10fsWVKM2tAuMLzuw==" >> /usr/sap/interfaces/sshkeys/SFTP_H2H_DBAPAC_DEV/.ssh/authorized_keys
+chmod 644 /usr/sap/interfaces/sshkeys/SFTP_H2H_DBAPAC_DEV/.ssh/authorized_keys
+chown SFTP_H2H_DBAPAC_DEV:sapsys /usr/sap/interfaces/sshkeys/SFTP_H2H_DBAPAC_DEV/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+printf '\n' && getent passwd | grep SFTP_H2H_DBAPAC_DEV && ll /usr/sap/interfaces/SFTP_DIR/ | grep SFTP_H2H_DBAPAC_DEV && ll /usr/sap/interfaces/sshkeys/SFTP_H2H_DBAPAC_DEV/.ssh/authorized_keys | grep SFTP_H2H_DBAPAC_DEV && grep  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDrrtYlTCV3T+7A+spEnym60KdKgiNV0gwQbpHEZrdN6Ip2bdIn9/xQg0fHlIOa" /usr/sap/interfaces/sshkeys/SFTP_H2H_DBAPAC_DEV/.ssh/authorized_keys && printf '\n'
+

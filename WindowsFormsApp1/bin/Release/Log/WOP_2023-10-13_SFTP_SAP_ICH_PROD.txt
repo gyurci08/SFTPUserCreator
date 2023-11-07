@@ -1,0 +1,31 @@
+########################### User data ###########################
+
+## System:  	WOP
+## User:    	SFTP_SAP_ICH_PROD
+## Pass:    	&@jvR4@IDkVF
+## Home:    	/usr/sap/interfaces/SFTP_DIR/SFTP_SAP_ICH_PROD
+
+################################################################
+
+################### Before CAMP user created ###################
+
+mkdir -p /usr/sap/interfaces/SFTP_DIR/SFTP_SAP_ICH_PROD
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/SFTP_SAP_ICH_PROD
+
+#################### After CAMP user created ####################
+
+chown -R SFTP_SAP_ICH_PROD:sapsys /usr/sap/interfaces/SFTP_DIR/SFTP_SAP_ICH_PROD
+
+#################### Public key installition ####################
+
+mkdir -p /usr/sap/interfaces/sshkeys/SFTP_SAP_ICH_PROD/.ssh/
+chmod -R 700 /usr/sap/interfaces/sshkeys/SFTP_SAP_ICH_PROD
+chown -R SFTP_SAP_ICH_PROD:sapsys /usr/sap/interfaces/sshkeys/SFTP_SAP_ICH_PROD
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD52wKoA715RikNId3ILJ629poH71Gd+f1iAlI16p7P0O6HvOoYyLDBrmGAkcmt+pzxZF0/ZAKmT6NgkEcC3Cj1OI5FBJynQMr2B9XHpCiRAYQlzYGz76Fot8FFgSLaqQgnHaZP21+y3fcKYMDZzxzoT8BdEhEbc8/oKettjNuGWX++0S0H/6bJWux5mPXIgISY2gC677U8gx5WPMO8uxyJZToi1xdHG1gyNM/V1dNg1rMnDCJSJ9AKQQihf68V8+DZtvELiBNHfWmp2exXoPj4iZwGfSUaXgoMDd6NfE8Xeqc1JWMIosi39mHkMk4gynXZZI6mwb/xr1jUdi59eIxK42P7/5oLVWk1k+0aF7aVNASa5h93HrIhYt5QOMNqd4b/2/5rk8JZQLAl9xaQe2s5rXiNbfV6Vqs3tBg4MO2Hq5OI67BOqBbO+m6X/lyTw4fdCmV8CXD7ZDUwcP4CjGcxI8rHO/VagGb55Npo5YJ8W7QopA+bMdD0bcEndxIQTJu7oOiqzaHjsm1UuNmJWY++YeOvjfhuQRY/d8nybdI7IlwFlUJhSsfZ5dQoMq0MHnifJfNU5T6ShvikAW+bitSxS0tueJmdL3MC0KQCZATNuZn1xBXPz5XepZuIFsghsdElRHEACc7tsq1GroommgGDTqppAhDCBhmwMVUzXVwrUQ==" >> /usr/sap/interfaces/sshkeys/SFTP_SAP_ICH_PROD/.ssh/authorized_keys
+chmod 644 /usr/sap/interfaces/sshkeys/SFTP_SAP_ICH_PROD/.ssh/authorized_keys
+chown SFTP_SAP_ICH_PROD:sapsys /usr/sap/interfaces/sshkeys/SFTP_SAP_ICH_PROD/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+printf '\n' && getent passwd | grep SFTP_SAP_ICH_PROD && ll /usr/sap/interfaces/SFTP_DIR/ | grep SFTP_SAP_ICH_PROD && ll /usr/sap/interfaces/sshkeys/SFTP_SAP_ICH_PROD/.ssh/authorized_keys | grep SFTP_SAP_ICH_PROD && grep  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD52wKoA715RikNId3ILJ629poH71Gd+f1iAlI16p7P0O6HvOoYyLDBrmGAkcmt" /usr/sap/interfaces/sshkeys/SFTP_SAP_ICH_PROD/.ssh/authorized_keys && printf '\n'
+

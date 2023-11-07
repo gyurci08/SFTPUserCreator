@@ -1,0 +1,31 @@
+########################### User data ###########################
+
+## System:  	PMQ
+## User:    	SFTP_ARIBA_QA
+## Pass:    	&936i0H60@os
+## Home:    	/usr/sap/interfaces/SFTP_DIR/SFTP_ARIBA_QA
+
+################################################################
+
+################### Before CAMP user created ###################
+
+mkdir -p /usr/sap/interfaces/SFTP_DIR/SFTP_ARIBA_QA
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/SFTP_ARIBA_QA
+
+#################### After CAMP user created ####################
+
+chown -R SFTP_ARIBA_QA:sapsys /usr/sap/interfaces/SFTP_DIR/SFTP_ARIBA_QA
+
+#################### Public key installition ####################
+
+mkdir -p /usr/sap/interfaces/sshkeys/SFTP_ARIBA_QA/.ssh/
+chmod -R 700 /usr/sap/interfaces/sshkeys/SFTP_ARIBA_QA
+chown -R SFTP_ARIBA_QA:sapsys /usr/sap/interfaces/sshkeys/SFTP_ARIBA_QA
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDPg6XLWWV+pS0gJ+RbU8++3VqGPcVm7xdkuMy0z79PUlyeOaikG+AWtRD68W8lId+du8kSayeiH3qeQcpNxW2gYprypYx8lZat7ja2kEl4leletgmpFtbHRpoGpQndgSyuY2iUYnN/VfJ4fgveC4ysBMQZNrThTCHwkSWhyoOogiFg/zqycQBGq8rTAHmX+UGE8j+SUFLGJ7CvjZYpvKA6QIUheWmLD8EK7y/gi9koASom1yOdH0v73ocOIj+e+9Ci2UJePTfvnjLKjHnNpRWb5zW28chmQyAGW6qoAgP6PUdwQ2OA+h0MThuDgGn2724GIb7p9RF96UFF2IvoLaxNfrQLkhVxugZOPqRpkbBqjTc+6lmzN64rsbaQDg6kuGsL0e5Dk0o/ymZolcNFUVdN3wAkBLiU5iDVhQlWAtYSjn2tFPuMKaMzAGtR6iAnMk/vAk4bKLY2rYpNtCyoYZOvT8DBT4UqlzIn1OTlQLuFagSvKKHrSXP6CUKlj9Juy4M78YP5npoaBKFkQknrN+4RswUPrcUrDIQrbuy0Yfa/CpREYuMUJ8UPv/3hihLLh2+N6rVriLn12JqmSLsuUu876t45aS1l6SHeMHjUS87d6gCbdedtcGDXa8A+pygKZ43nWtlQ1Sh31oJ1GyTZHBZSccMvMCbvShbmaFIoLc8Iow==" >> /usr/sap/interfaces/sshkeys/SFTP_ARIBA_QA/.ssh/authorized_keys
+chmod 644 /usr/sap/interfaces/sshkeys/SFTP_ARIBA_QA/.ssh/authorized_keys
+chown SFTP_ARIBA_QA:sapsys /usr/sap/interfaces/sshkeys/SFTP_ARIBA_QA/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+printf '\n' && getent passwd | grep SFTP_ARIBA_QA && ll /usr/sap/interfaces/SFTP_DIR/ | grep SFTP_ARIBA_QA && ll /usr/sap/interfaces/sshkeys/SFTP_ARIBA_QA/.ssh/authorized_keys | grep SFTP_ARIBA_QA && grep  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDPg6XLWWV+pS0gJ+RbU8++3VqGPcVm7xdkuMy0z79PUlyeOaikG+AWtRD68W8l" /usr/sap/interfaces/sshkeys/SFTP_ARIBA_QA/.ssh/authorized_keys && printf '\n'
+

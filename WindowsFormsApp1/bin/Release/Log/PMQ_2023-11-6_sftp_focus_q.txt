@@ -1,0 +1,41 @@
+########################### User data ###########################
+
+## System:  	PMQ
+## User:    	sftp_focus_q
+## Pass:    	tDKVWopb5P@n
+## Home:    	/usr/sap/interfaces/SFTP_DIR/sftp_focus_q
+
+################################################################
+
+################### Before CAMP user created ###################
+
+#
+mkdir -p /usr/sap/interfaces/SFTP_DIR/sftp_focus_q
+mkdir -p /usr/sap/interfaces/SFTP_DIR/sftp_focus_q/Archive
+#
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/sftp_focus_q
+
+#################### After CAMP user created ####################
+
+#
+chown -R sftp_focus_q:sapsys /usr/sap/interfaces/SFTP_DIR/sftp_focus_q
+
+#################### Public key installition ####################
+
+#
+mkdir -p /usr/sap/interfaces/sshkeys/sftp_focus_q/.ssh/
+#
+chmod -R 700 /usr/sap/interfaces/sshkeys/sftp_focus_q
+#
+chown -R sftp_focus_q:sapsys /usr/sap/interfaces/sshkeys/sftp_focus_q
+#
+echo "1" |  tee /usr/sap/interfaces/sshkeys/sftp_focus_q/.ssh/authorized_keys
+#
+chmod 644 /usr/sap/interfaces/sshkeys/sftp_focus_q/.ssh/authorized_keys
+#
+chown sftp_focus_q:sapsys /usr/sap/interfaces/sshkeys/sftp_focus_q/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+printf '\n' && getent passwd | grep sftp_focus_q && ll /usr/sap/interfaces/SFTP_DIR/ | grep sftp_focus_q && ll /usr/sap/interfaces/sshkeys/sftp_focus_q/.ssh/authorized_keys | grep sftp_focus_q && grep  "1" /usr/sap/interfaces/sshkeys/sftp_focus_q/.ssh/authorized_keys && printf '\n'
+

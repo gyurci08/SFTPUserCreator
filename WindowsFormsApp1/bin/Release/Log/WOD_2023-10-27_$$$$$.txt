@@ -1,0 +1,31 @@
+########################### User data ###########################
+
+## System:  	WOD
+## User:    	$$$$$
+## Pass:    	4wWT&BJJB@mm
+## Home:    	/usr/sap/interfaces/SFTP_DIR/$$$$$
+
+################################################################
+
+################### Before CAMP user created ###################
+
+mkdir -p /usr/sap/interfaces/SFTP_DIR/$$$$$
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/$$$$$
+
+#################### After CAMP user created ####################
+
+chown -R $$$$$:sapsys /usr/sap/interfaces/SFTP_DIR/$$$$$
+
+#################### Public key installition ####################
+
+mkdir -p /usr/sap/interfaces/sshkeys/$$$$$/.ssh/
+chmod -R 700 /usr/sap/interfaces/sshkeys/$$$$$
+chown -R $$$$$:sapsys /usr/sap/interfaces/sshkeys/$$$$$
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGQeWEJcUx43OxqNI7+o9BRH5Zv8RAs7Epl/1UxbAbbEVmNBnTA129YnIr/TlCcbyolCnaVjNeeMyp/LLTV5fTC8xJj/DuhfR56OyTGFXHER9lagaKEeqNh6eTFiMcsIUtDen97z4qZKo+jpCnw1VQ/ldWlKNdsD29omTkdZnQqfAjUiU3lhQFq9+97tQxW148PnpcznDB1yl+blyEe3IiYdFvShP8lfa868zNExkgqswA2mc8c2590Vmk89rxTz3nsZ7Y0i6AFs7MtXXHh2+wTW1hF/dzq/WU+OA0VMQuZKzqrrXUmCDbCwuzvJDds0fTQkTPCtjyeX2SJ4VVIBOBcEvXd9j4AI5tf0JYF3g1Q8F/sfzBXtmsDNK4OHoudIkj1+Cop+5zoRNFSjsTaIBJvb9Aj8HADDuro+dHMmewqLnLon1Tw9oxqKJlCdsAmtvkgI43hADGp9guxrF67ygJpd04UkSpGm/idJtNCkF20xbb8qa5jIwNf+kTez9ON85XrjDvXBLKnvWs0dCeIhhFY9E+UwBNz97GI6y0s8xPwIJOC3aigAXPi9pMZN+zp3oNJ3q3IbJhyXtsVY2Vkr+DA/BhweAqA+wN7Qbx6eK7ZfdeiSfUgxJEe4b0oKgvXGeHRI6Sf5QCQ7GPB3Dw7EfpOTCV9sg1ustv/RTfNs2usQ==" >> /usr/sap/interfaces/sshkeys/$$$$$/.ssh/authorized_keys
+chmod 644 /usr/sap/interfaces/sshkeys/$$$$$/.ssh/authorized_keys
+chown $$$$$:sapsys /usr/sap/interfaces/sshkeys/$$$$$/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+printf '\n' && getent passwd | grep $$$$$ && ll /usr/sap/interfaces/SFTP_DIR/ | grep $$$$$ && ll /usr/sap/interfaces/sshkeys/$$$$$/.ssh/authorized_keys | grep $$$$$ && grep  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGQeWEJcUx43OxqNI7+o9BRH5Zv8RAs7Epl/1UxbAbbEVmNBnTA129YnIr/TlC" /usr/sap/interfaces/sshkeys/$$$$$/.ssh/authorized_keys && printf '\n'
+

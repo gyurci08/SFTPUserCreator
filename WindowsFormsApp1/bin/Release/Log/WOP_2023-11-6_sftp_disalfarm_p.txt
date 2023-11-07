@@ -1,0 +1,41 @@
+########################### User data ###########################
+
+## System:  	WOP
+## User:    	sftp_disalfarm_p
+## Pass:    	7s@VOs3U9F2D
+## Home:    	/usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_p
+
+################################################################
+
+################### Before CAMP user created ###################
+
+#
+mkdir -p /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_p
+mkdir -p /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_p/inbound
+#
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_p
+
+#################### After CAMP user created ####################
+
+#
+chown -R sftp_disalfarm_p:sapsys /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_p
+
+#################### Public key installition ####################
+
+#
+mkdir -p /usr/sap/interfaces/sshkeys/sftp_disalfarm_p/.ssh/
+#
+chmod -R 700 /usr/sap/interfaces/sshkeys/sftp_disalfarm_p
+#
+chown -R sftp_disalfarm_p:sapsys /usr/sap/interfaces/sshkeys/sftp_disalfarm_p
+#
+echo "$$$$$" |  tee /usr/sap/interfaces/sshkeys/sftp_disalfarm_p/.ssh/authorized_keys
+#
+chmod 644 /usr/sap/interfaces/sshkeys/sftp_disalfarm_p/.ssh/authorized_keys
+#
+chown sftp_disalfarm_p:sapsys /usr/sap/interfaces/sshkeys/sftp_disalfarm_p/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+printf '\n' && getent passwd | grep sftp_disalfarm_p && ll /usr/sap/interfaces/SFTP_DIR/ | grep sftp_disalfarm_p && ll /usr/sap/interfaces/sshkeys/sftp_disalfarm_p/.ssh/authorized_keys | grep sftp_disalfarm_p && grep  "$" /usr/sap/interfaces/sshkeys/sftp_disalfarm_p/.ssh/authorized_keys && printf '\n'
+

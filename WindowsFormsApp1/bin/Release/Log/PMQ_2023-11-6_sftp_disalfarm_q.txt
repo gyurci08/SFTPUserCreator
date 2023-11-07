@@ -1,0 +1,41 @@
+########################### User data ###########################
+
+## System:  	PMQ
+## User:    	sftp_disalfarm_q
+## Pass:    	@g20mpTTPHlL
+## Home:    	/usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_q
+
+################################################################
+
+################### Before CAMP user created ###################
+
+#
+mkdir -p /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_q
+mkdir -p /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_q/PDF
+#
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_q
+
+#################### After CAMP user created ####################
+
+#
+chown -R sftp_disalfarm_q:sapsys /usr/sap/interfaces/SFTP_DIR/sftp_disalfarm_q
+
+#################### Public key installition ####################
+
+#
+mkdir -p /usr/sap/interfaces/sshkeys/sftp_disalfarm_q/.ssh/
+#
+chmod -R 700 /usr/sap/interfaces/sshkeys/sftp_disalfarm_q
+#
+chown -R sftp_disalfarm_q:sapsys /usr/sap/interfaces/sshkeys/sftp_disalfarm_q
+#
+echo "$$$$$" |  tee /usr/sap/interfaces/sshkeys/sftp_disalfarm_q/.ssh/authorized_keys
+#
+chmod 644 /usr/sap/interfaces/sshkeys/sftp_disalfarm_q/.ssh/authorized_keys
+#
+chown sftp_disalfarm_q:sapsys /usr/sap/interfaces/sshkeys/sftp_disalfarm_q/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+printf '\n' && getent passwd | grep sftp_disalfarm_q && ll /usr/sap/interfaces/SFTP_DIR/ | grep sftp_disalfarm_q && ll /usr/sap/interfaces/sshkeys/sftp_disalfarm_q/.ssh/authorized_keys | grep sftp_disalfarm_q && grep  "$" /usr/sap/interfaces/sshkeys/sftp_disalfarm_q/.ssh/authorized_keys && printf '\n'
+

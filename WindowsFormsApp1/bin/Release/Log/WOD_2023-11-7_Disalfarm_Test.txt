@@ -1,0 +1,40 @@
+########################### User data ###########################
+
+## System:  	WOD
+## User:    	Disalfarm_Test
+## Pass:    	YD&I9@@3C2B@
+## Home:    	/usr/sap/interfaces/SFTP_DIR/Disalfarm_Test
+
+################################################################
+
+################### Before CAMP user created ###################
+
+#
+mkdir -p /usr/sap/interfaces/SFTP_DIR/Disalfarm_Test
+#
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/Disalfarm_Test
+
+#################### After CAMP user created ####################
+
+#
+chown -R Disalfarm_Test:sapsys /usr/sap/interfaces/SFTP_DIR/Disalfarm_Test
+
+#################### Public key installition ####################
+
+#
+mkdir -p /usr/sap/interfaces/sshkeys/Disalfarm_Test/.ssh/
+#
+chmod -R 700 /usr/sap/interfaces/sshkeys/Disalfarm_Test
+#
+chown -R Disalfarm_Test:sapsys /usr/sap/interfaces/sshkeys/Disalfarm_Test
+#
+echo "..." | tee /usr/sap/interfaces/sshkeys/Disalfarm_Test/.ssh/authorized_keys
+#
+chmod 644 /usr/sap/interfaces/sshkeys/Disalfarm_Test/.ssh/authorized_keys
+#
+chown Disalfarm_Test:sapsys /usr/sap/interfaces/sshkeys/Disalfarm_Test/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+printf '\n' && getent passwd | grep Disalfarm_Test && ll /usr/sap/interfaces/SFTP_DIR/ | grep Disalfarm_Test && ll /usr/sap/interfaces/sshkeys/Disalfarm_Test/.ssh/authorized_keys | grep Disalfarm_Test && grep  "." /usr/sap/interfaces/sshkeys/Disalfarm_Test/.ssh/authorized_keys && printf '\n'
+

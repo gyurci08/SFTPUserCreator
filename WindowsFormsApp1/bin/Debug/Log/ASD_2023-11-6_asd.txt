@@ -1,0 +1,42 @@
+########################### User data ###########################
+
+## System:  	ASD
+## User:    	asd
+## Pass:    	&O8g@@9Jjk0&
+## Home:    	/usr/sap/interfaces/SFTP_DIR/asd
+
+################################################################
+
+################### Before CAMP user created ###################
+
+#
+mkdir -p /usr/sap/interfaces/SFTP_DIR/asd
+mkdir -p /usr/sap/interfaces/SFTP_DIR/asd/asd
+mkdir -p /usr/sap/interfaces/SFTP_DIR/asd/ave
+#
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/asd
+
+#################### After CAMP user created ####################
+
+#
+chown -R asd:sapsys /usr/sap/interfaces/SFTP_DIR/asd
+
+#################### Public key installition ####################
+
+#
+mkdir -p /usr/sap/interfaces/sshkeys/asd/.ssh/
+#
+chmod -R 700 /usr/sap/interfaces/sshkeys/asd
+#
+chown -R asd:sapsys /usr/sap/interfaces/sshkeys/asd
+#
+echo "1" | tee /usr/sap/interfaces/sshkeys/asd/.ssh/authorized_keys
+#
+chmod 644 /usr/sap/interfaces/sshkeys/asd/.ssh/authorized_keys
+#
+chown asd:sapsys /usr/sap/interfaces/sshkeys/asd/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+printf '\n' && getent passwd | grep asd && ll /usr/sap/interfaces/SFTP_DIR/ | grep asd && ll /usr/sap/interfaces/sshkeys/asd/.ssh/authorized_keys | grep asd && grep  "1" /usr/sap/interfaces/sshkeys/asd/.ssh/authorized_keys && printf '\n'
+
