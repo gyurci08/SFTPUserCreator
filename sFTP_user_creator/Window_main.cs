@@ -34,15 +34,20 @@ namespace WindowsFormsApp1
             generatedCommand_tb.Text = "";
             
 
-            string username = username_tb.Text;
+            string username = username_tb.Text.Replace(",}", "}");
             string group = group_tb.Text;
-            string password = PasswordGenerator.Generate(12, 2);
+            string password = "";
             string system = system_tb.Text.ToUpper();
             string parentHome = parentHome_tb.Text;
-            string dirs = home_tb.Text;
+            string dirs = home_tb.Text = home_tb.Text.Replace(",",";");
             string keyFile = keys_tb.Text;
             string pubKey = publicKey_tb.Text;
             string pubSub="";
+
+
+            List<string> users = new List<string>(); ;
+            Boolean moreUser = false;
+            Boolean commaFail = false;
 
 
             Boolean pubKeyEmpty = true;
@@ -55,8 +60,8 @@ namespace WindowsFormsApp1
             string logDir = "./Log/";
             string path = "./Log/" +system+"_"+dt.Year.ToString()+"-"+ dt.Month.ToString()+"-"+ dt.Day.ToString() + "_" + username + ".txt";
           
-            pass_tb.Text = password;
-            pass_tb.Enabled = true;
+            
+            
 
             int plusDir=0;
 
@@ -77,8 +82,47 @@ namespace WindowsFormsApp1
             else
                 {
                     existsEmpty = false;
+                    commaFail = false;
+
                     if (pubKey.Length < 1) { pubKeyEmpty = true; }
                     else { pubKeyEmpty = false; }
+
+                    pass_tb.Text = password = PasswordGenerator.Generate(12, 2);
+                    
+                    if (username.Contains(",") && !username.Contains("{") && !username.Contains("}"))
+                    {
+                        //commaFail = true;
+                        //MessageBox.Show("There is comma without brackets... The right format: {user1,user2}");
+                        username = username_tb.Text = username.Insert(0, "{").Insert(username.Length+1, "}");
+
+
+                        moreUser = true;
+
+
+                        int commas = username.Length - username.Replace(",", "").Length;
+
+
+                        for (int i = 0; i <= commas; i++)
+                        {
+                            users.Add(username.Split(',')[i].Replace("{", "").Replace("}", ""));
+                        }
+                    }
+                    else
+                    {
+                            moreUser = true;
+
+
+                            int commas = username.Length - username.Replace(",", "").Length;
+
+
+                            for (int i = 0; i <= commas; i++)
+                            {
+                                users.Add(username.Split(',')[i].Replace("{", "").Replace("}", ""));
+                            }
+                    }
+
+
+
             }
 
 
@@ -86,10 +130,9 @@ namespace WindowsFormsApp1
 
 
 
-
-            if (!existsEmpty)
+            if (!existsEmpty)  
             {
-
+                
              
 
 
@@ -139,7 +182,17 @@ namespace WindowsFormsApp1
 
                     commands.Add(lineCreator.aligned(" After CAMP user created ", lineWidth));
                     commands.Add("#");
-                    commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, username, parentHome));
+                    if (moreUser) 
+                        {
+                            foreach (string user in users)
+                                {
+                                    commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, user, parentHome));
+                                }
+                        }
+                    else 
+                        {
+                            commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, username, parentHome));
+                        }
                     commands.Add("");
 
                 if (!pubKeyEmpty)
@@ -163,20 +216,28 @@ namespace WindowsFormsApp1
                         commands.Add("#");
                         commands.Add(String.Format("chmod -R 700 {0}{1}", keyFile, username));
                         commands.Add("#");
-                        commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, username, keyFile));
-                        commands.Add("#");
                         commands.Add(String.Format("echo \"{0}\" | tee {1}{2}/.ssh/authorized_keys", pubKey, keyFile, username));
                         commands.Add("#");
                         commands.Add(String.Format("chmod 644 {0}{1}/.ssh/authorized_keys", keyFile, username));
                         commands.Add("#");
-                        commands.Add(String.Format("chown {1}:{0} {2}{1}/.ssh/authorized_keys", group, username, keyFile));
-                        commands.Add("");
+                        if (moreUser)
+                        {
+                            foreach (string user in users)
+                            {
+                                commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, user, keyFile));
+                            }
+                        }
+                        else
+                        {
+                            commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, username, keyFile));
+                        }
+                    commands.Add("");
                 }
 
                 // Test
                 commands.Add(lineCreator.aligned(" Check user creation ", lineWidth));
                 commands.Add("#");
-                commands.Add(String.Format("printf '\\n'  && getent passwd | grep {1} && ll {0} | grep {1} && printf '\\n'\r\n", parentHome, username, keyFile));
+                commands.Add(String.Format("printf '\\n'  && getent passwd | grep {1} && ll {0} | grep {1} && printf '\\n'\r", parentHome, username, keyFile));
 
                 if (!pubKeyEmpty)
                     { 
@@ -188,7 +249,7 @@ namespace WindowsFormsApp1
                     // ,pubSub
                     //&& ll {0} | grep {1} && ll {2}{1}/.ssh/authorized_keys | grep {1} && grep  \"{3}\" {2}{1}/.ssh/authorized_keys
 
-                    path = path.Replace("{", "").Replace("}", "").Replace(",","_");
+                    path = path.Replace("{", "").Replace("}", "").Replace(",","&");
 
 
                 if(path.Length < 150) logWriter.createLogFile(path);
