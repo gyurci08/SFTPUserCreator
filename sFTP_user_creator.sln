@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sFTP_user_creator", "WindowsFormsApp1\sFTP_user_creator.csproj", "{E437712B-4668-42F0-9AA2-6C8BCB2E3A16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sFTP_user_creator", "sFTP_user_creator\sFTP_user_creator.csproj", "{E437712B-4668-42F0-9AA2-6C8BCB2E3A16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6F356BC0-3665-435E-ACCA-F8BF5C20602E}
+		SolutionGuid = {96D35161-008B-4C4B-96AD-852701CAB06C}
 	EndGlobalSection
 EndGlobal
