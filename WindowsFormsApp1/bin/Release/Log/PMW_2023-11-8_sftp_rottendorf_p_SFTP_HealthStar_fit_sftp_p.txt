@@ -1,0 +1,44 @@
+########################### User data ###########################
+
+## System:  	PMW
+## User:    	{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}
+## Pass:    	i2LFg4qf@&6@
+## Home:    	/usr/sap/interfaces/SFTP_DIR/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}
+
+################################################################
+
+################### Before CAMP user created ###################
+
+#
+mkdir -p /usr/sap/interfaces/SFTP_DIR/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}
+#
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}
+
+#################### After CAMP user created ####################
+
+#
+chown -R {sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}:sapsys /usr/sap/interfaces/SFTP_DIR/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}
+
+#################### Public key installition ####################
+
+#
+mkdir -p /usr/sap/interfaces/sshkeys/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}/.ssh/
+#
+chmod -R 700 /usr/sap/interfaces/sshkeys/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}
+#
+chown -R {sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}:sapsys /usr/sap/interfaces/sshkeys/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}
+#
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDkCtZD1cduOJcwj+ReuKwH/1rRKmApdMzH5DVCrd0W+dGSo543o06BoVnmi5LHFfYBDy3f3RQowyYRT6ACC1rBzgdbSFyKTQ8dD9ARp+IM/B5OU2RrzNvACDWnt4ZOFCShRI876FvlphWbCdfNz6MgW6KzDm5J+mI6pohk4GGvyxHw8mlKNP4k2JcJl/2fRVwKj2Cxg7nU7d+0JvNj6W6ipiVSjbKUEnre/KVcDBdVCAnRbJin9kqISbHG7TeZq8Z2ZdOKrKCveQ8eOi/wWs2zlhvVU6ncumnxtbuIQW1rB4rfgctJxshdj16Yuv/ojLCDmE/7aCpb5pFdMfnmI4n7/V64jLqZH94kOo1ZdkecRJOLbfvA4R87XQ1GTG0moxj4G8mU7TCWz5Jt7itTJWFNx2slQ7QNspOG954WzDYL4OvXmDgj0f7mMsBaOY3CNnJcKiY+2jx6oilYCr0B8s6CaE7J5BFrjPTyaWQopOj0P51x/9MWxoPrCPG+7eiWQerZaZN0FT5B1JFKlhTcmcG9/N427uVmjZ5Elklp3s7asz9KIqy9GyXKRRt/UnqS1lVvhmOz9KibI5uxCWUlrqT+S7mZ/arl2jcKqaKB4sM/YBFUeBy3k4H+rErSe9sDN7BL1jr+Uz5nS3hPZ4qIyvz8D2LtQH09SEFjWPbSArYtDw==" | tee /usr/sap/interfaces/sshkeys/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}/.ssh/authorized_keys
+#
+chmod 644 /usr/sap/interfaces/sshkeys/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}/.ssh/authorized_keys
+#
+chown {sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}:sapsys /usr/sap/interfaces/sshkeys/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}/.ssh/authorized_keys
+
+###################### Check user creation ######################
+
+#
+printf '\n'  && getent passwd | grep {sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p} && ll /usr/sap/interfaces/SFTP_DIR/ | grep {sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p} && printf '\n'
+
+#
+printf '\n' && ll /usr/sap/interfaces/sshkeys/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}/.ssh/authorized_keys | grep {sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p} && grep  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDkCtZD1cduOJcwj+ReuKwH/1rRKmApdMzH5DVCrd0W+dGSo543o06BoVnmi5LH" /usr/sap/interfaces/sshkeys/{sftp_rottendorf_p,SFTP_HealthStar,fit_sftp_p}/.ssh/authorized_keys  && printf '\n'
+

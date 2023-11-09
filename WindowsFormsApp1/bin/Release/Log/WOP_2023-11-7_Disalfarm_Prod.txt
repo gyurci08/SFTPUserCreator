@@ -1,0 +1,26 @@
+########################### User data ###########################
+
+## System:  	WOP
+## User:    	Disalfarm_Prod
+## Pass:    	hDJ4fo&&J27i
+## Home:    	/usr/sap/interfaces/SFTP_DIR/Disalfarm_Prod
+
+################################################################
+
+################### Before CAMP user created ###################
+
+#
+mkdir -p /usr/sap/interfaces/SFTP_DIR/Disalfarm_Prod
+#
+chmod -R 770 /usr/sap/interfaces/SFTP_DIR/Disalfarm_Prod
+
+#################### After CAMP user created ####################
+
+#
+chown -R Disalfarm_Prod:sapsys /usr/sap/interfaces/SFTP_DIR/Disalfarm_Prod
+
+###################### Check user creation ######################
+
+#
+printf '\n'  && getent passwd | grep Disalfarm_Prod && ll /usr/sap/interfaces/SFTP_DIR/ | grep Disalfarm_Prod && printf '\n'
+

@@ -9,7 +9,6 @@ namespace WindowsFormsApp1
 {
     public partial class Window_main : Form
     {
-        PasswordGenerator passwordGengenerator = new PasswordGenerator();
         List<string> commands = new List<string>();
         LogWriter logWriter = new LogWriter();
         AlignedLineCreator lineCreator = new AlignedLineCreator();
@@ -37,7 +36,7 @@ namespace WindowsFormsApp1
 
             string username = username_tb.Text;
             string group = group_tb.Text;
-            string password = passwordGengenerator.Generate(12);
+            string password = PasswordGenerator.Generate(12, 2);
             string system = system_tb.Text.ToUpper();
             string parentHome = parentHome_tb.Text;
             string dirs = home_tb.Text;
@@ -182,7 +181,7 @@ namespace WindowsFormsApp1
                 if (!pubKeyEmpty)
                     { 
                         commands.Add("#");
-                        commands.Add(String.Format("printf '\\n' && ll {2}{1}/.ssh/authorized_keys | grep {1} && grep  \"{3}\" {2}{1}/.ssh/authorized_keys  && printf '\\n'\r\n", parentHome, username, keyFile, pubSub)); 
+                        commands.Add(String.Format("printf '\\n' && ll {2}{1}/.ssh/authorized_keys && grep  \"{3}\" {2}{1}/.ssh/authorized_keys  && printf '\\n'\r\n", parentHome, username, keyFile, pubSub)); 
                     }
 
 
