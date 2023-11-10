@@ -239,15 +239,42 @@ namespace WindowsFormsApp1
                 commands.Add("#");
                 commands.Add(String.Format("printf '\\n'  && getent passwd | grep {1} && ll {0} | grep {1} && printf '\\n'\r", parentHome, username, keyFile));
 
+
+
                 if (!pubKeyEmpty)
-                    { 
-                        commands.Add("#");
-                        commands.Add(String.Format("printf '\\n' && ll {2}{1}/.ssh/authorized_keys && grep  \"{3}\" {2}{1}/.ssh/authorized_keys  && printf '\\n'\r\n", parentHome, username, keyFile, pubSub)); 
+                {
+                    commands.Add("#");
+                    commands.Add(String.Format("printf '\\n' && ll {2}{1}/.ssh/authorized_keys && grep  \"{3}\" {2}{1}/.ssh/authorized_keys  && printf '\\n'\r\n", parentHome, username, keyFile, pubSub));
+                }
+
+
+
+
+                // Unlock user
+                commands.Add("");
+                commands.Add(lineCreator.aligned(" Unlock user ", lineWidth));
+                commands.Add("#");
+                if (moreUser)
+                {
+                    string pam="";
+                    foreach (string user in users)
+                    {
+                        pam = pam + String.Format("pam_tally2 --user {0} --reset  && ", user);
                     }
+                    commands.Add(pam.Substring(0, pam.Length-4));
+                }
+                else
+                {
+                    commands.Add(String.Format("printf '\\n'  &&  pam_tally2 --user {1} && printf '\\n'\r", parentHome, username, keyFile));
+                }
+                commands.Add("");
 
 
-                    // ,pubSub
-                    //&& ll {0} | grep {1} && ll {2}{1}/.ssh/authorized_keys | grep {1} && grep  \"{3}\" {2}{1}/.ssh/authorized_keys
+
+
+
+
+
 
                     path = path.Replace("{", "").Replace("}", "").Replace(",","&");
 
