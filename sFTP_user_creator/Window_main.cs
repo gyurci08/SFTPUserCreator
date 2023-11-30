@@ -249,6 +249,16 @@ namespace WindowsFormsApp1
 
 
 
+                // Check user user messages
+
+                commands.Add("");
+                commands.Add(lineCreator.aligned(" View user messages ", lineWidth));
+                commands.Add("#");
+                commands.Add(String.Format("grep \"{0}\" /var/log/messages | tail", username));
+                commands.Add("#");
+                commands.Add(String.Format("grep \"{0}\" `ps -ef | grep \"/sbin/sshd\" | grep \"/logfile\" | awk \'{{print $13}}\'` | tail", username));
+                
+
 
                 // Unlock user
                 commands.Add("");
