@@ -156,7 +156,7 @@ namespace WindowsFormsApp1
                 commands.Add(String.Format("## System:  \t{0}",system));
                 commands.Add(String.Format("## User:    \t{0}", username));
                 commands.Add(String.Format("## Pass:    \t{0}", password));
-                commands.Add(String.Format("## Home:    \t{0}{1}\n", parentHome,username));
+                commands.Add(String.Format("## Home:    \t{0}{1}", parentHome,username));
                 commands.Add(lineCreator.aligned("", lineWidth));
 
 
@@ -166,21 +166,18 @@ namespace WindowsFormsApp1
 
 
                 //Home and directories
-                    commands.Add(lineCreator.aligned(" Before CAMP user created ", lineWidth));
+                    commands.Add(lineCreator.aligned(" After CAMP user created ", lineWidth));
                     commands.Add("#");
                     commands.Add(String.Format("mkdir -p {0}{1}", parentHome, username));
                     for (int i = 0; i < plusDir; i++)
                         {
                             if (dirs.Split(';')[i].Length > 0) 
                                     { 
-                                        commands.Add(String.Format("mkdir -p {0}{1}/{2}", parentHome, username, dirs.Split(';')[i].Replace(" ",""))); 
+                                        commands.Add(String.Format("mkdir -p {0}{1}/{2}", parentHome, username, dirs.Split(';')[i].Replace(" ","")).Replace("//", "/")); 
                                     }
                         }
                     commands.Add("#");
                     commands.Add(String.Format("chmod -R 770 {0}{1}", parentHome, username));
-                    commands.Add("");
-
-                    commands.Add(lineCreator.aligned(" After CAMP user created ", lineWidth));
                     commands.Add("#");
                     if (moreUser) 
                         {
@@ -193,7 +190,7 @@ namespace WindowsFormsApp1
                         {
                             commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, username, parentHome));
                         }
-                    commands.Add("");
+                    
 
                 if (!pubKeyEmpty)
                 {
@@ -215,8 +212,10 @@ namespace WindowsFormsApp1
                         commands.Add(String.Format("mkdir -p {0}{1}/.ssh/", keyFile, username));
                         commands.Add("#");
                         commands.Add(String.Format("chmod -R 700 {0}{1}", keyFile, username));
+                        //commands.Add("#");
+                        //commands.Add(String.Format("#cp -p {0}{1}/.ssh/authorized_keys {0}{1}/.ssh/authorized_keys_old", keyFile, username));
                         commands.Add("#");
-                        commands.Add(String.Format("echo \"{0}\" | tee {1}{2}/.ssh/authorized_keys", pubKey, keyFile, username));
+                        commands.Add(String.Format("echo \"{0}\" | tee -a {1}{2}/.ssh/authorized_keys", pubKey, keyFile, username));
                         commands.Add("#");
                         commands.Add(String.Format("chmod 644 {0}{1}/.ssh/authorized_keys", keyFile, username));
                         commands.Add("#");
@@ -231,7 +230,7 @@ namespace WindowsFormsApp1
                         {
                             commands.Add(String.Format("chown -R {1}:{0} {2}{1}", group, username, keyFile));
                         }
-                    commands.Add("");
+                    
                 }
 
                 // Test
@@ -244,14 +243,14 @@ namespace WindowsFormsApp1
                 if (!pubKeyEmpty)
                 {
                     commands.Add("#");
-                    commands.Add(String.Format("printf '\\n' && ll {2}{1}/.ssh/authorized_keys && grep  \"{3}\" {2}{1}/.ssh/authorized_keys  && printf '\\n'\r\n", parentHome, username, keyFile, pubSub));
+                    commands.Add(String.Format("printf '\\n' && ll {2}{1}/.ssh/authorized_keys && grep  \"{3}\" {2}{1}/.ssh/authorized_keys  && printf '\\n'\r", parentHome, username, keyFile, pubSub));
                 }
 
 
 
                 // Check user user messages
 
-                commands.Add("");
+                
                 commands.Add(lineCreator.aligned(" View user messages ", lineWidth));
                 commands.Add("#");
                 commands.Add(String.Format("grep \"{0}\" /var/log/messages | tail", username));
@@ -261,7 +260,7 @@ namespace WindowsFormsApp1
 
 
                 // Unlock user
-                commands.Add("");
+                
                 commands.Add(lineCreator.aligned(" Unlock user ", lineWidth));
                 commands.Add("#");
                 if (moreUser)
@@ -277,7 +276,7 @@ namespace WindowsFormsApp1
                 {
                     commands.Add(String.Format("printf '\\n'  &&  pam_tally2 --user {1} && printf '\\n'\r", parentHome, username, keyFile));
                 }
-                commands.Add("");
+                
 
 
 
@@ -292,9 +291,9 @@ namespace WindowsFormsApp1
                 if(path.Length < 150) logWriter.createLogFile(path);
 
 
-                var commandsEdited = commands.Select(s => s.Replace("//", "/")).ToList();
+                //var commandsEdited = commands.Select(s => s.Replace("//","/").ToList());
 
-                foreach (var item in commandsEdited)
+                foreach (var item in commands)
                     {
                         generatedCommand_tb.AppendText(item+"\n");
 

@@ -24,7 +24,7 @@ namespace sFTP_user_creator.Services
                 aligned += "#";
             }
 
-            return aligned+"\n";
+            return aligned;
         }
 
 
